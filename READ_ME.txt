@@ -1,0 +1,1 @@
+Try to write your respective sections to different branches, might make merging a bit more annoying, but at least we won't overwrite each others data
