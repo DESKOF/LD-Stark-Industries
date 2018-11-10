@@ -8,9 +8,9 @@ module EnableDFF(input enable, clk, D, output Q, input reset);
 	always @(posedge clk)
 		begin
 			if(reset)
-				Q = 1; // if reset was triggered, set Q to one
+				Q = 1;
 			if(enable)
-				Q = D; // if reset wasn't triggered, set Q to the value of D
+				Q = D;
 		end
 endmodule
 //End DFF
