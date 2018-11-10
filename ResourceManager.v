@@ -110,7 +110,7 @@ module FourBitAdderSubtractor(input [3:0] a, input[3:0] b, input cin, output cou
 	
 endmodule
  
-  //Stores 4 bits by using DFF's, with first being low and eighthbit being the highest
+  //Stores 8 bits by using DFF's, with first being low and eighthbit being the highest
  module Energy(input enable, input clk, input load[7:0], output out[7:0], input reset);
      EndableDFF firstBit (enable, clk, load[0], out[0], reset);
 	 EnableDFF secondBit (enable, clk, load[1] out[1], reset);
@@ -123,7 +123,7 @@ endmodule
 		
  endmodule
  
-  //Stores 4 bits by using DFF's, with first being low and sixth being the highest
+  //Stores 6 bits by using DFF's, with first being low and sixth being the highest
  module SpiderTracer(input enable, input clk, input load[5:0], output out[5:0]);
     EnableDFF firstBit (enable, clk, load[0], out[0], reset);
 	EnableDFF secondBit (enable, clk, load[1] out[1], reset);
