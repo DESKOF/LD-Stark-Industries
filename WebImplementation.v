@@ -1,5 +1,5 @@
 
-//=====================================================================================================
+//==================================================================================
 // Decoder to take the user's choice and determine which bit to output a one on.
 // The select[0] is the lsb, while the select[2] is the msb. The out[0]is the lsb,
 // and the out[7] is the msb. Output out will be one-hot.
@@ -24,10 +24,10 @@ endmodule
 
 
 
-//=====================================================================================================
+//==================================================================================
 // This module interprets the output of the Decoder module and determines what kind
 // of web that the user wants to use.
-module DecChoice(input [2:0] select, enable);
+module DecChoice(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input [2:0] select, enable);
 	wire [7:0] choice; // will hold the one-hot binary bit string from the decoder
 	
 	Decoder dec (select, enable, choice); //determine the web that the user wants
@@ -46,3 +46,7 @@ module DecChoice(input [2:0] select, enable);
 		endcase
 	
 endmodule
+
+
+//==================================================================================
+// 
