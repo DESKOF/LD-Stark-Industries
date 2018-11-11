@@ -167,14 +167,15 @@ endmodule
 module LoadEnergy(input enable, reset, clk, output [7:0] out);
 	wire [7:0] out;
 	reg [7:0] load;
-	reg k;
-	
-	initial
-	begin
-	for(k = 0; k < 8; k = k + 1)
-		begin
-			load[k] = 1;
-		end
+	initial begin
+		load[0] = 1;
+		load[1] = 1;
+		load[2] = 1;
+		load[3] = 1;
+		load[4] = 1;
+		load[5] = 1;
+		load[6] = 1;
+		load[7] = 1;
 	end
 	
 	Energy en (enable, clk, load, out, reset);
@@ -186,14 +187,13 @@ endmodule
 module LoadTracers(input enable, clk, output [5:0] out);
 	wire [5:0] out;
 	reg [5:0] load;
-	reg k;
-	
-	initial
-	begin
-	for(k = 0; k < 6; k = k + 1)
-		begin
-			load[k] = 1;
-		end
+	initial begin
+		load[0] = 1;
+		load[1] = 1;
+		load[2] = 1;
+		load[3] = 1;
+		load[4] = 1;
+		load[5] = 1;
 	end
 	
 	SpiderTracer st (enable, clk, load, out);
@@ -205,14 +205,12 @@ endmodule
 module LoadFluid(input enable, clk, output [3:0] out);
 	wire [3:0] out;
 	reg [3:0] load;
-	reg k;
-	
-	initial
-	begin
-	for(k = 0; k < 4; k = k + 1)
-		begin
-			load[k] = 1;
-		end
+	//reg k;
+	initial begin
+		load[0] = 1;
+		load[1] = 1;
+		load[2] = 1;
+		load[3] = 1;
 	end
 	
 	Fluid fl (enable, clk, load, out);
