@@ -153,3 +153,67 @@ module Fluid(input enable, input clk, input [3:0] load, output [3:0] out);
 	EnableDFF thirdBit (enable, clk, load[2], out[2], reset);
 	EnableDFF fourthBit (enable, clk, load[3], out[3], reset);   
 endmodule
+
+
+
+
+
+
+
+
+
+//==================================================================================
+// Loads the initial 256 (11111111) energy units
+module LoadEnergy(input enable, reset, clk, output [7:0] out);
+	wire [7:0] out;
+	reg [7:0] load;
+	reg k;
+	
+	initial
+	begin
+	for(k = 0; k < 8; k = k + 1)
+		begin
+			load[k] = 1;
+		end
+	end
+	
+	Energy en (enable, clk, load, out, reset);
+endmodule
+
+
+//=============================================
+// Loads the initial 64 (111111) tracers
+module LoadTracers(input enable, clk, output [5:0] out);
+	wire [5:0] out;
+	reg [5:0] load;
+	reg k;
+	
+	initial
+	begin
+	for(k = 0; k < 6; k = k + 1)
+		begin
+			load[k] = 1;
+		end
+	end
+	
+	SpiderTracer st (enable, clk, load, out);
+endmodule
+
+
+//=============================================
+// Loads the initial 16 (1111) doses of fluid
+module LoadFluid(input enable, clk, output [3:0] out);
+	wire [3:0] out;
+	reg [3:0] load;
+	reg k;
+	
+	initial
+	begin
+	for(k = 0; k < 4; k = k + 1)
+		begin
+			load[k] = 1;
+		end
+	end
+	
+	Fluid fl (enable, clk, load, out);
+endmodule
