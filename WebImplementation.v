@@ -51,3 +51,186 @@ endmodule
 
 //==================================================================================
 // 
+
+
+
+
+//==================================================================================
+// 
+module Taser(input enable, input clk, output [3:0] webNeeded, output [7:0] energyNeeded, output [5:0] tracersNeeded);
+	reg [3:0] webNeeded;
+	reg [7:0] energyNeeded;
+	reg [5:0] tracersNeeded;
+	
+	always @(posedge clk)
+	begin
+		//0001 if enable, 0 if not enable
+		webNeeded[3] = 0;
+		webNeeded[2] = 0;
+		webNeeded[1] = 0;
+		webNeeded[0] = enable;
+	
+		//00010000 in binary, 16 in decimal if enable, otherwise 0
+		energyNeeded[7] = 0;
+		energyNeeded[6] = 0;
+		energyNeeded[5] = 0;
+		energyNeeded[4] = enable;
+		energyNeeded[3] = 0;
+		energyNeeded[2] = 0;
+		energyNeeded[1] = 0;
+		energyNeeded[0] = 0;
+	
+		//001000 in binary, 8 in decimal if enable, otherwise 0
+		tracersNeeded[5] = 0;
+		tracersNeeded[4] = 0;
+		tracersNeeded[3] = enable;
+		tracersNeeded[2] = 0;
+		tracersNeeded[1] = 0;
+		tracersNeeded[0] = 0;
+	end
+endmodule
+
+
+//==================================================================================
+// 
+module Tracer(input enable, input clk, output [3:0] webNeeded, output [7:0] energyNeeded, output [5:0] tracersNeeded);
+	reg [3:0] webNeeded;
+	reg [7:0] energyNeeded;
+	reg [5:0] tracersNeeded;
+	
+	always @(posedge clk)
+	begin
+		//0001 if enable, 0 if not enable
+		webNeeded[3] = 0;
+		webNeeded[2] = 0;
+		webNeeded[1] = 0;
+		webNeeded[0] = enable;
+	
+		//00000001 in binary, 1 in decimal if enable, otherwise 0
+		energyNeeded[7] = 0;
+		energyNeeded[6] = 0;
+		energyNeeded[5] = 0;
+		energyNeeded[4] = 0;
+		energyNeeded[3] = 0;
+		energyNeeded[2] = 0;
+		energyNeeded[1] = 0;
+		energyNeeded[0] = enable;
+	
+		//000100 in binary, 4 in decimal if enable, otherwise 0
+		tracersNeeded[5] = 0;
+		tracersNeeded[4] = 0;
+		tracersNeeded[3] = 0;
+		tracersNeeded[2] = enable;
+		tracersNeeded[1] = 0;
+		tracersNeeded[0] = 0;
+	end
+	
+endmodule
+
+
+//==================================================================================
+// 
+module Grenade(input enable, input clk, output [3:0] webNeeded, output [7:0] energyNeeded);
+	reg [3:0] webNeeded;
+	reg [7:0] energyNeeded;
+	
+	always @(posedge clk)
+	begin
+		//1111 if enable, 0 if not enable
+		webNeeded[3] = enable;
+		webNeeded[2] = enable;
+		webNeeded[1] = enable;
+		webNeeded[0] = enable;
+	
+		//00000100 in binary, 4 in decimal if enable, otherwise 0
+		energyNeeded[7] = 0;
+		energyNeeded[6] = 0;
+		energyNeeded[5] = 0;
+		energyNeeded[4] = 0;
+		energyNeeded[3] = 0;
+		energyNeeded[2] = enable;
+		energyNeeded[1] = 0;
+		energyNeeded[0] = 0;
+	end
+endmodule
+
+
+//==================================================================================
+// 
+module SwingLine(input enable, input clk, output [3:0] webNeeded, output [7:0] energyNeeded);
+	reg [3:0] webNeeded;
+	reg [7:0] energyNeeded;
+	
+	always @(posedge clk)
+	begin
+		//0001 if enable, 0 if not enable
+		webNeeded[3] = 0;
+		webNeeded[2] = 0;
+		webNeeded[1] = 0;
+		webNeeded[0] = enable;
+	
+		//00000001 in binary, 1 in decimal if enable, otherwise 0
+		energyNeeded[7] = 0;
+		energyNeeded[6] = 0;
+		energyNeeded[5] = 0;
+		energyNeeded[4] = 0;
+		energyNeeded[3] = 0;
+		energyNeeded[2] = 0;
+		energyNeeded[1] = 0;
+		energyNeeded[0] = enable;
+	end
+endmodule
+
+
+//==================================================================================
+// 
+module RapidFire(input enable, input clk, output [3:0] webNeeded, output [7:0] energyNeeded);
+	reg [3:0] webNeeded;
+	reg [7:0] energyNeeded;
+	
+	always @(posedge clk)
+	begin
+		//0001 if enable, 0 if not enable
+		webNeeded[3] = 0;
+		webNeeded[2] = 0;
+		webNeeded[1] = 0;
+		webNeeded[0] = enable;
+	
+		//00000001 in binary, 1 in decimal if enable, otherwise 0
+		energyNeeded[7] = 0;
+		energyNeeded[6] = 0;
+		energyNeeded[5] = 0;
+		energyNeeded[4] = 0;
+		energyNeeded[3] = 0;
+		energyNeeded[2] = 0;
+		energyNeeded[1] = 0;
+		energyNeeded[0] = enable;
+	end
+endmodule
+
+
+//==================================================================================
+// 
+module Ricochet(input enable, input clk, output [3:0] webNeeded, output [7:0] energyNeeded);
+	reg [3:0] webNeeded;
+	reg [7:0] energyNeeded;
+	
+	always @(posedge clk)
+	begin
+		//0001 if enable, 0 if not enable
+		webNeeded[3] = 0;
+		webNeeded[2] = 0;
+		webNeeded[1] = 0;
+		webNeeded[0] = enable;
+	
+		//00000010 in binary, 2 in decimal if enable, otherwise 0
+		energyNeeded[7] = 0;
+		energyNeeded[6] = 0;
+		energyNeeded[5] = 0;
+		energyNeeded[4] = 0;
+		energyNeeded[3] = 0;
+		energyNeeded[2] = 0;
+		energyNeeded[1] = enable;
+		energyNeeded[0] = 0;
+	end
+endmodule
