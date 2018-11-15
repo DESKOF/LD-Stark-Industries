@@ -16,7 +16,7 @@ module DFF(rst, clk, D, Q);
 endmodule
 
 //determines the target for each
-module Decoder(in, out, enable);
+module Telem_Decoder(in, out, enable);
 	input [7:0] in;
 	input enable;
 	output [31:0] out;
@@ -27,8 +27,8 @@ module Decoder(in, out, enable);
 
 endmodule
 
-//selector for each dff
-module Mux(nochange, load, sel, out);
+//selector for each individual dff
+module Telem_Mux(nochange, load, sel, out);
 	//In and Outs
 	input nochange;
 	input load;
