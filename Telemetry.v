@@ -28,21 +28,24 @@ module Telem_Decoder(in, out, enable);
 endmodule
 
 //selector for each individual dff
-module Telem_Mux(nochange, load, rst sel, out);
+module Telem_Mux(nochange, load, rst, sel1 sel2, out);
 	//In and Outs
 	input nochange;
 	input load;
-	input sel;
+	input rst;
+	input sel1;
+	input sel2;
 	output out;
 
 	//Internal Vars
 	reg  out;
 	
-	always @ (sel)
+	always @ (sel1, sel2)
 	begin
  	case(sel) 
-		1'b0 : out = nochange;
-		1'b1 : out = load;
+		2'b00 : out = nochange;
+		2'b01 : out = load;
+		2'b11 : out = rst;
 	default out = 1'bx;
  	endcase 
 end
