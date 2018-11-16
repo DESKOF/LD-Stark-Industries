@@ -9,7 +9,7 @@ module TargetDFF(enable, rst, clk, D, Q);
 	always @(posedge clk or rst)
 	begin
 	if(rst)
-		Q = 0;
+		Q = 1'bx;
 	else
 		Q = D;
 	end
