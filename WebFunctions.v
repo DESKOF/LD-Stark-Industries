@@ -1,3 +1,10 @@
+//// I FIXED UP THIS CODE AND MADE SURE THAT IT COMPILES WITHOUT ERRORS. IT IS NOW PROBABLY OBS0LETE. 
+//// REFER TO THE OTHER FILE IN THIS BRANCH FOR THE RIGHT CODE, YEAH
+
+
+
+
+
 module spiderTaser(input enable, input clk, output webNeeded[3:0], output energyNeeded[7:0], output tracersNeeded[5:0]);
 
 
