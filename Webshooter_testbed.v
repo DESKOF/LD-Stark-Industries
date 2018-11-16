@@ -598,6 +598,10 @@ module WebShooter(input [3:0] TelemetryTargetSelect, input[2:0] WebFunctionSelec
 	wire [5:0] initialTracer;
 	wire [3:0] initialFluid;
 	
+	wire [7:0] EnergyLevel;
+	wire [5:0] TracerLevel;
+	wire [3:0] FluidLevel;
+	
 	wire [7:0] finalEnergy;
 	
 	wire [3:0] finalFluid;
@@ -611,10 +615,12 @@ module WebShooter(input [3:0] TelemetryTargetSelect, input[2:0] WebFunctionSelec
 	
 	LoadFluid fluidLoader(reset, clk, initialFluid);
 	
-	Decoder webDec(initialEnergy, initialTracers, initialFluid,  WebFunctionSelect, ground, clk, finalEnergy, tracerCount, finalFluid);
 	
 	
+	Decoder webDec(initialEnergy, initialTracers, initialFluid, WebFunctionSelect, ground, clk, finalEnergy, tracerCount, finalFluid);
 	
+	
+	//(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input [2:0] select, input enable, input clk, output [7:0] energyOut, output [5:0] tracersOut, output [3:0] fluidOut);
 	
 	
 	
@@ -680,18 +686,32 @@ WebShooter Shooter(TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoord
  
  
   #1 //Delay a tick to avoid falling on edge
- $display("Inputs : Clk = X | TelemetryTargetSelect = XXXX | WebFunctionSelect = XXX |  XCoordinate = XXXXXXXX |  YCoordinate = XXXXXXXX |  ZCoordinate = XXXXXXXX \n",
-                 "======================================================================================================================================================\n",
-				"Outputs: tracerCount = XX | XReturn = XXX | YReturn = XXX | ZReturn = XXX | TimeReturn = XXX \n"
-		   );
+
 forever
 	begin
 	#10 //Double individual clock delay to get full length and keep on same frequency of updates
+	
 	$display ("Start of next cycle \n");
 	$display ("======================================================================================================================================================\n");
-	$display ("Inputs : Clk = %b | TelemetryTargetSelect = %4b | WebFunctionSelect = %3b |  XCoordinate = %8b |  YCoordinate = %8b |  ZCoordinate = %8b \n");
+	
+	$display("Inputs : Clk = X \n TelemetryTargetSelect = XXXX \n WebFunctionSelect = XXX \n  XCoordinate = XXXXXXXX \n  YCoordinate = XXXXXXXX \n  ZCoordinate = XXXXXXXX \n",
+                 "======================================================================================================================================================\n",
+				);
+	$display ("%b", clk);
+	$display ("%4b", TelemetryTargetSelect);
+	$display ("%3b", WebFunctionSelect);
+	$display ("%8b", XCoordinate); 
+	$display ("%8b", YCoordinate);
+	$display ("%8b", ZCoordinate);
 	$display ("======================================================================================================================================================\n");
-	$display ("Outputs: tracerCount = %2d | XReturn = %3d | YReturn = %3d | ZReturn = %3d | TimeReturn = %3d \n");
+	$display ("Outputs:\n tracerCount = XX \n XReturn = XXX \n YReturn = XXX \n ZReturn = XXX \n TimeReturn = XXX \n");
+	$display ("%2d\n", tracerCount);
+	$display ("%3d\n", XReturn);
+	$display ("%3d\n", YReturn);
+	$display ("%3d\n", ZReturn);
+	$display ("%3d\n", TimeReturn);
+	
+	//$display ("Outputs: tracerCount = %2d | XReturn = %3d | YReturn = %3d | ZReturn = %3d | TimeReturn = %3d \n", tracerCount, XReturn, YReturn, ZReturn, TimeReturn);
 	if(fluid == zeroFluidComparitor) $fdisplay (file, "Fluid is empty Spider-Man, you need to reload it \n");
 
 
@@ -784,23 +804,12 @@ end
  
 
 initial begin
-#31 //TO BE CHANGED
+#62 //TO BE CHANGED
 $fclose(file); //Close output file
 $finish; //Ends all loops
 end 
 
-initial begin
-	forever
-	if (energy == zeroEnergyComparitor)
-	$display ("Energy empty, goodbye Spider-Man");
-	#1
-	if (energy == zeroEnergyComparitor)
-	$fclose(file);
-	#1
-	if (energy == zeroEnergyComparitor)
-	$finish;
-	
-	end
+
 
 
  endmodule
