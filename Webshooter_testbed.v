@@ -30,7 +30,7 @@ module Telem_Decoder(in, enable, out);
 	output [15:0] out;
 	reg [15:0] out;
 
-	always @ (enable)
+	always @ (in)
 	begin
 		//default output if case statement is not reached i.e. enable = 0
 		out = 16'b0000000000000000;
@@ -153,7 +153,7 @@ module Target_Select(rst, clk, enable, targetSelection, XCoordinate, YCoordinate
 	TargetReg t16(clk, rst, target[0], XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, X16Out, Y16Out, Z16Out, T16Out);
 
 	always @ *
-		case(enable)
+		case(target)
 		target[15]: begin
 			XOut = X1Out;
 			YOut = Y1Out;
@@ -948,28 +948,15 @@ WebShooter Shooter(TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoord
 forever
 	begin
 	#10 //Double individual clock delay to get full length and keep on same frequency of updates
+	$display ("==============================================================================================================================\n");
+	$display ("Start of next cycle \n");	
+	$display("Inputs : \nClk = %b \nTelemetryTargetSelect = %4b \nWebFunctionSelect =     %3b \nXCoordinate =           %8b \nYCoordinate =           %8b \nZCoordinate =           %8b \n", clk, TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoordinate, ZCoordinate);
 	
-	$display ("Start of next cycle \n");
-	$display ("======================================================================================================================================================\n");
+	$display ("==============================================================================================================================\n");
+	$display ("Outputs:\ntracerCount = %b \nXReturn =     %8b \nYReturn =     %8b \nZReturn =     %8b \nTimeReturn =  %8b \n", tracerCount, XReturn, YReturn, ZReturn, TimeReturn);
+
 	
-	$display("Inputs : Clk = X \n TelemetryTargetSelect = XXXX \n WebFunctionSelect = XXX \n  XCoordinate = XXXXXXXX \n  YCoordinate = XXXXXXXX \n  ZCoordinate = XXXXXXXX \n",
-                 "======================================================================================================================================================\n",
-				);
-	$display ("%b", clk);
-	$display ("%4b", TelemetryTargetSelect);
-	$display ("%3b", WebFunctionSelect);
-	$display ("%8b", XCoordinate); 
-	$display ("%8b", YCoordinate);
-	$display ("%8b", ZCoordinate);
-	$display ("======================================================================================================================================================\n");
-	$display ("Outputs:\n tracerCount = XX \n XReturn = XXX \n YReturn = XXX \n ZReturn = XXX \n TimeReturn = XXX \n");
-	$display ("%b\n", tracerCount);
-	$display ("%8b\n", XReturn);
-	$display ("%8b\n", YReturn);
-	$display ("%8b\n", ZReturn);
-	$display ("%8b\n", TimeReturn);
-	
-	//$display ("Outputs: tracerCount = %2d | XReturn = %3d | YReturn = %3d | ZReturn = %3d | TimeReturn = %3d \n", tracerCount, XReturn, YReturn, ZReturn, TimeReturn);
+	//$display ("Outputs: tracerCount = %2d | XReturn = %3d | YReturn = %3d | ZReturn = %3d | TimeReturn =  %3d \n", tracerCount, XReturn, YReturn, ZReturn, TimeReturn);
 	if(fluid == zeroFluidComparitor) $fdisplay (file, "Fluid is empty Spider-Man, you need to reload it \n");
 
 
