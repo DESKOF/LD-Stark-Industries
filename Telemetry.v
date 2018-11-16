@@ -309,7 +309,6 @@ initial begin
 	reset = 1;
 #5
 	clk = 0;
-	reset = 1;
 #5
 	clk = 1;
 	reset = 0;
@@ -351,7 +350,7 @@ initial begin
 	enable = 0;
 end
 initial begin
-#50
+#60
 $fclose(file);
 $finish;
 end
