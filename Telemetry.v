@@ -1,24 +1,4 @@
 //Target DFFs hold single bits for each coordinate
-
-module TargetDFF(rst, clk, D, Q);
-	input rst;
-	input clk;
-	input D;
-	output Q;
-	reg Q;
-
-	always @(posedge clk)
-	begin
-	if(rst)
-		#2 
-		Q = 0;
-	else
-		#2 
-		Q = D;
-	end
-endmodule
-
-//determines the target for each
 module TargetDFF(enable, rst, clk, D, Q);
 	input rst;
 	input enable;
@@ -47,6 +27,7 @@ module Telem_Decoder(in, enable, out);
 
 	always @ (enable or in)
 	begin
+		//sets a default value if it does not reach case statement
 		out = 16'b0000000000000000;
 		if(enable)
 		case(in)
@@ -70,7 +51,7 @@ module Telem_Decoder(in, enable, out);
 	end
 endmodule
 
-
+//Creates the coordinate module that bundles 8 DDFs into a single 8 bit register
 module Coord(clk, rst, enable, Coordin, Coordout);
 	input clk, rst;
 	input enable;
@@ -88,7 +69,7 @@ module Coord(clk, rst, enable, Coordin, Coordout);
 	TargetDFF first(enable, rst, clk, Coordin[0], Coordout[0]);
 	
 endmodule
-
+//Bundles 4 8-bit registers as one of each coordinate and time register
 module TargetReg(clk, rst, enable, XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, XOut, YOut, ZOut, TOut);
 	input clk, rst, enable;
 	input [7:0] XCoordinate;
@@ -106,7 +87,8 @@ module TargetReg(clk, rst, enable, XCoordinate, YCoordinate, ZCoordinate, TimeCo
 	Coord T(clk, rst, enable, TimeCoordinate, TOut);
 	
 endmodule
-
+//Module creates the 16 targets (including spiderman as the first target) and determines which target register is enabled by decoder
+//to pass the coordinate value into the DFFs
 module Target_Select(rst, clk, enable, targetSelection, XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, XOut, YOut, ZOut, TOut);
 	input clk, rst;
 	input enable;
