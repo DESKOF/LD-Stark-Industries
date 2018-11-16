@@ -8,9 +8,9 @@ module EnableDFF(input enable, clk, D, output Q, input reset);
 	always @(posedge clk)
 		begin
 			if(reset)
-				Q = 1;
+				Q = 1; // if reset was triggered, set Q to one
 			if(enable)
-				Q = D;
+				Q = D; // if reset wasn't triggered & enable is 1, set Q to the value of D
 		end
 endmodule
 //End DFF
@@ -132,7 +132,7 @@ endmodule
  
  //=============================================
 //Stores 6 bits by using DFF's, with first being low and sixth being the highest
-module SpiderTracer(input enable, input clk, input [5:0] load, output [5:0] out);
+module SpiderTracer(input enable, input clk, input [5:0] load, output [5:0] out, input reset);
 	wire [5:0] out;
 	
 	EnableDFF firstBit (enable, clk, load[0], out[0], reset);
@@ -145,7 +145,7 @@ endmodule
  
  //=============================================
 //Stores 4 bits by using DFF's, with first being low and fourth being the highest
-module Fluid(input enable, input clk, input [3:0] load, output [3:0] out);
+module Fluid(input enable, input clk, input [3:0] load, output [3:0] out, input reset);
     wire [3:0] out;
 	
 	EnableDFF firstBit (enable, clk, load[0], out[0], reset);
@@ -153,6 +153,7 @@ module Fluid(input enable, input clk, input [3:0] load, output [3:0] out);
 	EnableDFF thirdBit (enable, clk, load[2], out[2], reset);
 	EnableDFF fourthBit (enable, clk, load[3], out[3], reset);   
 endmodule
+
 
 
 
@@ -186,6 +187,7 @@ endmodule
 // Loads the initial 64 (111111) tracers
 module LoadTracers(input enable, clk, output [5:0] out);
 	wire [5:0] out;
+	wire zero = 0;
 	reg [5:0] load;
 	initial begin
 		load[0] = 1;
@@ -196,7 +198,7 @@ module LoadTracers(input enable, clk, output [5:0] out);
 		load[5] = 1;
 	end
 	
-	SpiderTracer st (enable, clk, load, out);
+	SpiderTracer st (enable, clk, load, out, zero);
 endmodule
 
 
@@ -204,8 +206,8 @@ endmodule
 // Loads the initial 16 (1111) doses of fluid
 module LoadFluid(input enable, clk, output [3:0] out);
 	wire [3:0] out;
+	wire zero = 0;
 	reg [3:0] load;
-	//reg k;
 	initial begin
 		load[0] = 1;
 		load[1] = 1;
@@ -213,5 +215,5 @@ module LoadFluid(input enable, clk, output [3:0] out);
 		load[3] = 1;
 	end
 	
-	Fluid fl (enable, clk, load, out);
+	Fluid fl (enable, clk, load, out, zero);
 endmodule
