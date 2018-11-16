@@ -1,5 +1,5 @@
 //DFFs hold single bits for each coordinate
-module DFF(rst, clk, D, Q);
+module TargetDFF(rst, clk, D, Q);
 	input clk;
 	input D;
 	input rst;
@@ -55,13 +55,13 @@ module Coord(clk, in, out);
 	input [7:0] in;
 	output [7:0] out;
 	
-	DFF eigth(clk, in[7], out[7]);
-	DFF seventh(clk, in[6], out[6]);
-	DFF sixth(clk, in[5], out[5]);
-	DFF fifth(clk, in[4], out[4]);
-	DFF fourth(clk, in[3], out[3]);
-	DFF third(clk, in[2], out[2]);
-	DFF second(clk, in[1], out[1]);
-	DFF first(clk, in[0], out[0]);
+	TargetDFF eigth(clk, in[7], out[7]);
+	TargetDFF seventh(clk, in[6], out[6]);
+	TargetDFF sixth(clk, in[5], out[5]);
+	TargetDFF fifth(clk, in[4], out[4]);
+	TargetDFF fourth(clk, in[3], out[3]);
+	TargetDFF third(clk, in[2], out[2]);
+	TargetDFF second(clk, in[1], out[1]);
+	TargetDFF first(clk, in[0], out[0]);
 	
 endmodule
