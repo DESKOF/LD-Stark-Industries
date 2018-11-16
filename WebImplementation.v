@@ -352,3 +352,49 @@ module Ricochet(input enable, input clk, output [3:0] webNeeded, output [7:0] en
 		energyNeeded[0] = 0;
 	end
 endmodule
+
+
+
+
+
+
+
+//==================================================================================
+// 
+/* module Example ();
+	wire one = 1; wire zero = 0; reg clk = 0;
+	wire [7:0] energy;
+	wire [5:0] tracers;
+	wire [3:0] fluid;
+	wire [7:0] energyNext;
+	wire [5:0] tracersNext;
+	wire [3:0] fluidNext;
+	reg [2:0] selectBits;
+	
+	initial begin
+		selectBits[0] = 0;
+		selectBits[1] = 0;
+		selectBits[2] = 0;
+	end
+	initial begin
+		forever begin
+			#5 clk = 1;
+			#5 clk = 0;
+		end
+	end
+	
+	LoadEnergy le (one, zero, clk, energy);
+	LoadTracers lt (one, clk, tracers);
+	LoadFluid lf (one, clk, fluid);
+	
+	Decoder dec1 (energy, tracers, fluid, selectBits, one, clk, energyNext, tracersNext, fluidNext);
+	assign fluid = fluidNext;
+	assign energy = energyNext;
+	assign tracers = tracersNext;
+	// then new slect bits/user choice
+	Decoder dec2 (energy, tracers, fluid, selectBits, one, clk, energyNext, tracersNext, fluidNext);
+	assign fluid = fluidNext;
+	assign energy = energyNext;
+	assign tracers = tracersNext;
+	// etc...
+endmodule */
