@@ -426,19 +426,45 @@ endmodule
 
 //==================================================================================
 // Loads the initial 255 (11111111) energy units
-module LoadEnergy(input enable, reset, clk, output [7:0] out);
+module LoadEnergy(input enable, input reset, input clk, input [7:0] previous, output [7:0] out);
 	wire [7:0] out;
 	reg [7:0] load;
-	initial begin
+	always @ (posedge clk) begin
+	if(reset)
 		load[0] = 1;
+		if(reset)
 		load[1] = 1;
+		if(reset)
 		load[2] = 1;
+		if(reset)
 		load[3] = 1;
+		if(reset)
 		load[4] = 1;
+		if(reset)
 		load[5] = 1;
+		if(reset)
 		load[6] = 1;
+		if(reset)
 		load[7] = 1;
-	end
+		
+	
+	if(reset == 0)
+		load[0] <= previous[0];
+		if(reset == 0)
+		load[1] <= previous[1];
+		if(reset == 0)
+		load[2] <= previous[2];
+		if(reset == 0)
+		load[3] <= previous[3];
+		load[4] <= previous[4];
+		if(reset == 0)
+		load[5] <= previous[5];
+		if(reset == 0)
+		load[6] <= previous[6];
+		if(reset == 0)
+		load[7] <= previous[7];
+	end	
+
 	
 	Energy en (enable, clk, load, out, reset);
 endmodule
@@ -446,17 +472,37 @@ endmodule
 
 //=============================================
 // Loads the initial 63 (111111) tracers
-module LoadTracers(input enable, clk, output [5:0] out);
+module LoadTracers(input reset, input enable, input clk, input [5:0] previous, output [5:0] out);
 	wire [5:0] out;
 	wire zero = 0;
 	reg [5:0] load;
-	initial begin
+	always @ (posedge clk) begin
+	if(reset)
 		load[0] = 1;
+		if(reset)
 		load[1] = 1;
+		if(reset)
 		load[2] = 1;
+		if(reset)
 		load[3] = 1;
+		if(reset)
 		load[4] = 1;
+		if(reset)
 		load[5] = 1;
+	
+	if(!reset)
+		load[0] = previous[0];
+		if(!reset)
+		load[1] = previous[1];
+		if(!reset)
+		load[2] = previous[2];
+		if(!reset)
+		load[3] = previous[3];
+		if(!reset)
+		load[4] = previous[4];
+		if(!reset)
+		load[5] = previous[5];
+		
 	end
 	
 	SpiderTracer st (enable, clk, load, out, zero);
@@ -465,15 +511,29 @@ endmodule
 
 //=============================================
 // Loads the initial 15 (1111) doses of fluid
-module LoadFluid(input enable, clk, output [3:0] out);
+module LoadFluid(input enable, input reset, input clk, input [3:0] previous, output [3:0] out);
 	wire [3:0] out;
 	wire zero = 0;
 	reg [3:0] load;
-	initial begin
+	always @ (posedge clk) begin
+	if(reset)
 		load[0] = 1;
+		if(reset)
 		load[1] = 1;
+		if(reset)
 		load[2] = 1;
+		if(reset)
 		load[3] = 1;
+		
+	if(!reset)
+		load[0] = previous[0];
+		if(!reset)
+		load[1] = previous[1];
+		if(!reset)
+		load[2] = previous[2];
+		if(!reset)
+		load[3] = previous[3];
+		
 	end
 	
 	Fluid fl (enable, clk, load, out, zero);
@@ -514,9 +574,9 @@ endmodule
 module Decoder(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input [2:0] select, input enable, input clk, output [7:0] energyOut, output [5:0] tracersOut, output [3:0] fluidOut);
 	wire [7:0] choice; // will hold the one-hot binary bit string from the decoder
 	
-	wire [7:0] energyOut; // will reflect the energy after the user choice executes
-	wire [3:0] fluidOut; // will reflect the fluid after the user choice executes
-	wire [5:0] tracersOut; // will reflect the tracers after the user choice executes
+	reg [7:0] energyOut; // will reflect the energy after the user choice executes
+	reg [3:0] fluidOut; // will reflect the fluid after the user choice executes
+	reg [5:0] tracersOut; // will reflect the tracers after the user choice executes
 	
 	reg one = 1; // holds a value of 1
 	reg zero = 0; // holds a value of 0
@@ -567,6 +627,9 @@ module Decoder(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input
 	wire [3:0] webNeededTC;
 	wire [7:0] energyNeededTC;
 	wire [5:0] tracersNeededTC;
+	
+	reg power = 1;
+	reg ground = 0;
 
 	
 	//determine the web that the user wants based off of select bits
@@ -574,7 +637,7 @@ module Decoder(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input
 	
 	
 	// determine how many units of resources are needed for each option
-	LoadFluid LF (choice[0], clk, fluid); // select bits mean that user choice is 0
+	LoadFluid LF (power, choice[0], ground, clk, fluid); // select bits mean that user choice is 0
 	SwingLine sl1 (choice[1], clk, webNeededSL, energyNeededSL); // select bits mean that user choice is 1
 	Ricochet r2 (choice[2], clk, webNeededRC, energyNeededRC); // select bits mean that user choice is 2
 	Grenade g3 (choice[3], clk, webNeededWG, energyNeededWG); // select bits mean that user choice is 3
@@ -627,9 +690,11 @@ module Decoder(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input
 	
 	
 	// show the changes for the resources by outputting/returning them
-	assign energyOut = energy;
-	assign fluidOut = fluid;
-	assign tracersOut = tracers;
+	always @ (posedge clk) begin
+		assign energyOut = energy;
+		assign fluidOut = fluid;
+		assign tracersOut = tracers;
+	end
 endmodule
 
 
@@ -843,12 +908,12 @@ endmodule
 
 
 //The "Breadboard" module, for use in piecing together the circuit
-module WebShooter(input [3:0] TelemetryTargetSelect, input[2:0] WebFunctionSelect, input [7:0] XCoordinate, input [7:0] YCoordinate, input [7:0] ZCoordinate, input [7:0] TimeCoordinate, input clk, input reset, output[5:0] tracersOut, output [7:0] energyOut, output [3:0] fluidOut, output [7:0] XReturn, output [7:0] YReturn, output [7:0] ZReturn, output [7:0] TimeReturn);
+module WebShooter(input [7:0] PreviousEnergy, input [3:0] PreviousFluid, input [5:0] PreviousTracer, input [3:0] TelemetryTargetSelect, input[2:0] WebFunctionSelect, input [7:0] XCoordinate, input [7:0] YCoordinate, input [7:0] ZCoordinate, input [7:0] TimeCoordinate, input clk, input reset, output[5:0] tracersOut, output [7:0] energyOut, output [3:0] fluidOut, output [7:0] XReturn, output [7:0] YReturn, output [7:0] ZReturn, output [7:0] TimeReturn);
     //THIS WILL NEED TO HAVE ALL THE MODULES THEMSELVES SET UP AND PREPARED FOR USE
 
-	reg [7:0] energy=11;
-	reg [5:0] tracers=11;
-	reg [3:0] fluid=11;
+	wire [7:0] energy;
+	wire [5:0] tracers;
+	wire [3:0] fluid;
 
 
 	wire [7:0] EnergyLevel;
@@ -861,29 +926,21 @@ module WebShooter(input [3:0] TelemetryTargetSelect, input[2:0] WebFunctionSelec
 
 	reg power = 1; //For a default value of 1, equivalent to tying to power in a physical circuit
 	reg ground = 0; //For a default value of 0, equivalent to tying to ground in a physical circuit
-	/*
-	LoadEnergy enLoader(power, power, clk, energy);
+	
+	LoadEnergy enLoader(power, reset, clk, PreviousEnergy, energy);
 
-	LoadTracers tracerLoader(power, clk, tracers);
+	LoadTracers tracerLoader(power, reset, clk, PreviousTracer, tracers);
 
-    LoadFluid fluidLoader(power, clk, fluid);
-	*/
+    LoadFluid fluidLoader(power, reset, clk, PreviousFluid, fluid);
+	
 
 
-	Decoder webDec(energy, tracers, fluid, WebFunctionSelect, enable, clk, energyOut, tracersOut, fluidOut);
+	Decoder webDec(energy, tracers, fluid, WebFunctionSelect, power, clk, energyOut, tracersOut, fluidOut);
 	//(input [7:0] energy, input [5:0] tracers, input [3:0] fluid, input [2:0] select, input enable, input clk, output [7:0] energyOut, output [5:0] tracersOut, output [3:0] fluidOut);
 	
 	
 	Target_Select Telemetry(reset, clk, enable, TelemetryTargetSelect, XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, XReturn, YReturn, ZReturn, TimeReturn);
-	/*always @(posedge clk) begin
-	tracerCount[0] = 1;
-	tracerCount[1] = 1;
-	tracerCount[2] = 1;
-	tracerCount[3] = 1;
-	tracerCount[4] = 1;
-	tracerCount[5] = 1;
-
-	end*/
+	
 
  endmodule
 //END MODULES
@@ -934,7 +991,7 @@ initial begin
 //NEED DETAILS ON WHAT INPUTS AND OUTPUTS ARE NEEDED
 
 
-WebShooter Shooter(TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, clk, Reset, tracerCount, energy, fluid, XReturn, YReturn, ZReturn, TimeReturn);
+WebShooter Shooter(energy, fluid, tracerCount, TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, clk, Reset, tracerCount, energy, fluid, XReturn, YReturn, ZReturn, TimeReturn);
  //WebShooter( TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoordinate, ZCoordinate, TimeCoordinate, clk, reset, tracerCount, energyEmpty, fluidEmpty, XReturn, YReturn, ZReturn, TimeReturn)
  
  initial begin   
@@ -949,7 +1006,7 @@ forever
 	begin
 	#10 //Double individual clock delay to get full length and keep on same frequency of updates
 	$display ("==============================================================================================================================\n");
-	$display ("Start of next cycle \n");	
+	$display ("Start of cycle \n");	
 	$display("Inputs : \nClk = %b \nTelemetryTargetSelect = %4b \nWebFunctionSelect =     %3b \nXCoordinate =           %8b \nYCoordinate =           %8b \nZCoordinate =           %8b \n", clk, TelemetryTargetSelect, WebFunctionSelect, XCoordinate, YCoordinate, ZCoordinate);
 	
 	$display ("==============================================================================================================================\n");
